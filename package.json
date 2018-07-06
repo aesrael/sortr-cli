@@ -1,0 +1,29 @@
+{
+  "name": "sortr-cli",
+  "version": "1.0.0",
+  "description": "a cli tool to sort files in your machine",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/israeladura/sortr-cli.git"
+  },
+  "keywords": [
+    "sortr",
+    "sort",
+    "cli",
+    "sort",
+    "files"
+  ],
+  "author": "my name <israeladura@gmail.com> (http://israeladura.me/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/israeladura/sortr-cli/issues"
+  },
+  "homepage": "https://github.com/israeladura/sortr-cli#readme",
+  "dependencies": {
+    "commander": "^2.16.0"
+  }
+}
