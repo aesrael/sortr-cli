@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "a cli tool to sort files in your machine",
   "main": "index.js",
+  "bin": {
+    "sortr": "./index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -24,6 +27,7 @@
   },
   "homepage": "https://github.com/israeladura/sortr-cli#readme",
   "dependencies": {
+    "chalk": "*",
     "commander": "^2.16.0"
   }
 }
