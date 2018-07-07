@@ -1,82 +1,87 @@
-var fs = require('fs');
-var os = require('os');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
 
 //sortr code
-var dirs=['Downloads','Music','Desktop','Videos','Pictures','Documents'];
+const dirs = [
+  'Downloads',
+  'Music',
+  'Desktop',
+  'Videos',
+  'Pictures',
+  'Documents'
+];
 
-//check if 'new' folders exist in each parent dir, else create 
-for(var i=0; i<dirs.length; i++){
-    if (!fs.existsSync(os.homedir() + '/' + dirs[i]  + '/' + 'new')){
-        fs.mkdirSync(os.homedir() + '/' + dirs[i]  + '/' + 'new');
+//folder to loop through
+const downloads = os.homedir() + '/' + 'Downloads/test';
+
+//folders to sort to
+const music = `${os.homedir()}/Music/new`;
+const desktop = `${os.homedir()}/Desktop/new`;
+const video = `${os.homedir()}/Videos/new`;
+const pictures = `${os.homedir()}/Pictures/new`;
+const documents = `${os.homedir()}/Documents/new`;
+
+//sort mp3 files
+walk(downloads);
+// sort(['mp3', 'ogg', 'wav'], music);
+// //sort video files
+// sort(['mp4', 'avi', 'flv', 'vob', 'mpg', 'mpeg'], video);
+// //sort books
+// sort(['pdf', 'epub'], documents);
+// //sort zip,gzip and rar files
+// sort(['zip', 'gzip', 'rar'], documents);
+// //sort apps
+// sort(['dmg', 'exe'], documents);
+// //sort pictures
+// sort(['png', 'jpeg', 'jpg'], pictures);
+// //sort documents
+// sort(['doc', 'ppt'], documents);
+
+function walk(dir, filelist) {
+  files = fs.readdirSync(dir);
+  filelist = filelist || [];
+  files.map(file => {
+    if (fs.statSync(path.join(dir, file)).isDirectory()) {
+      filelist = walk(path.join(dir, file), filelist);
+    } else {
+      filelist.push(path.join(dir, file));
     }
+  });
+  return filelist;
+}
+function sort(dir) {
+  const files = walk(dir);
+  files.forEach(file => {
+    console.log(file);
+  });
 }
 
- // fs.mkdirSync(os.homedir() + '/' + dirs[i]  + '/' + 'new');
- //folder to loop through
- var downloads = os.homedir() + '/' + 'Downloads/test';
+sort(downloads);
 
- //folders to sort to
- var music = os.homedir() + '/' + 'Music' + '/' + 'new';
- var desktop = os.homedir() + '/' + 'Desktop' + '/' + 'new';
- var video = os.homedir() + '/' + 'Videos' + '/' + 'new';
- var pictures = os.homedir() + '/' + 'Pictures' + '/' + 'new';
- var documents = os.homedir() + '/' + 'Documents' + '/' + 'new';
-
-fs.readdir(downloads, function (err, files) {
-    if (err) throw err;
-
-    //loop through the files array;
-    files.forEach(function (file) {
+module.exports = {
+  sort
+};
 
 
-        //sort mp3 files
-        sort(['mp3', 'ogg', 'wav'], music);
-        //sort video files
-        sort(['mp4', 'avi', 'flv', 'vob', 'mpg', 'mpeg'], video);
-        //sort books
-        sort(['pdf', 'epub'], documents);
-        //sort zip,gzip and rar files
-        sort(['zip', 'gzip', 'rar'], documents);
-        //sort apps
-        sort(['dmg', 'exe'], documents);
-        //sort pictures
-        sort(['png', 'jpeg', 'jpg'], pictures);
-        //sort documents
-        sort(['doc', 'ppt'], documents);
+// /**
+//  * list function definition
+//  *
+//  */
+// let list = (directory, options) => {
+//   const cmd = 'ls';
+//   let params = [];
 
-        //Remove unfinished downloads
-        unlink('.crdownload');
+//   if (options.all) params.push('a');
+//   if (options.long) params.push('l');
+//   let parameterizedCommand = params.length ? cmd + ' -' + params.join('') : cmd;
+//   if (directory) parameterizedCommand += ' ' + directory;
 
-        // remove files
-        function unlink(ext) {
-            if (file.indexOf('.' + ext) != -1) {
-                fs.unlink(downloads + '/' + file, function (err) {
-                    console.log('faulty file removed')
-                })
-            }
-        }
+//   let output = (error, stdout, stderr) => {
+//     if (error) console.log(chalk.red.bold.underline('exec error:') + error);
+//     if (stdout) console.log(chalk.green.bold.underline('Result:') + stdout);
+//     if (stderr) console.log(chalk.red('Error: ') + stderr);
+//   };
 
-        // sort files
-        function sort(extension, dir) {
-            extension.map(function (ext) {
-
-
-                if (file.indexOf('.' + ext) != -1) {
-                    console.log(file + ' ' + 'found');
-
-                    //rename paths
-                    var oldpath = downloads + '/' + file;
-                    var newpath = dir + '/' + file;
-
-                    fs.rename(oldpath, newpath, function (err) {
-                        if (err) throw err;
-
-                    });
-
-                }
-            });
-        }
-    });
-});
-
-
+//   exec(parameterizedCommand, output);
+// };
