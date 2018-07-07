@@ -4,11 +4,11 @@
  * Require dependencies
  *
  */
-const program = require('commander'),
-  chalk = require('chalk'),
-  exec = require('child_process').exec,
-  pkg = require('./package.json');
-
+const program = require('commander');
+const chalk = require('chalk');
+const exec = require('child_process').exec;
+const pkg = require('./package.json');
+const { sort } = require('./sortr.js');
 /**
  * list function definition
  *
@@ -36,7 +36,7 @@ program
   .command('list [directory]')
   .option('-a, --all', 'List all')
   .option('-l, --long', 'Long list format')
-  .action(list);
+  .action(sort);
 
 program.parse(process.argv);
 
