@@ -12,15 +12,13 @@ const dirs = [
   'Documents'
 ];
 
-//folder to loop through
-const downloads = os.homedir() + '/' + 'Downloads/test';
-
 //folders to sort to
-const music = `${os.homedir()}/Music/`;
-const desktop = `${os.homedir()}/Desktop/`;
-const videos = `${os.homedir()}/Videos/`;
-const pictures = `${os.homedir()}/Pictures/`;
-const documents = `${os.homedir()}/Documents/`;
+const downloads = os.homedir() + '/' + 'Downloads/test';
+const music = `${os.homedir()}/Music`;
+const desktop = `${os.homedir()}/Desktop`;
+const videos = `${os.homedir()}/Videos`;
+const pictures = `${os.homedir()}/Pictures`;
+const documents = `${os.homedir()}/Documents`;
 
 function walk(dir, filelist) {
   files = fs.readdirSync(dir);
@@ -46,20 +44,42 @@ function sort(directory, options) {
 
   // let parametizedOptions = params.join('');
 
-  // const files = walk(directory);
-  // console.log(files);
-  files.forEach(async file => {
+  const files = walk(directory);
+  console.log(files);
+  files.forEach(file => {
+    console.log(file);
     if (!params.length) {
-      filetype = await findType(file);
+      filetype = findType(file);
       if (filetype === 'music') {
+        fs.rename(file, `${music}/${filename(file)}`, err => {
+          if (err) throw err;
+        });
       }
       if (filetype === 'video') {
+        fs.rename(file, `${videos}/${filename(file)}`, err => {
+          if (err) throw err;
+        });
       }
-      //find mimetype
-      //sort into directory based on mimetypes using rename
-      // sort all files here
+      if (filetype === 'document') {
+        fs.rename(file, `${documents}/${filename(file)}`, err => {
+          if (err) throw err;
+        });
+      }
+      if (filetype === 'picture') {
+        fs.rename(file, `${pictures}/${filename(file)}`, err => {
+          if (err) throw err;
+        });
+      }
     }
   });
+}
+
+function filename(file) {
+  return file
+    .toString()
+    .toLowerCase()
+    .split('/')
+    .pop();
 }
 
 function findType(file) {
