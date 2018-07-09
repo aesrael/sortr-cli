@@ -16,11 +16,11 @@ const dirs = [
 const downloads = os.homedir() + '/' + 'Downloads/test';
 
 //folders to sort to
-const music = `${os.homedir()}/Music/new`;
-const desktop = `${os.homedir()}/Desktop/new`;
-const videos = `${os.homedir()}/Videos/new`;
-const pictures = `${os.homedir()}/Pictures/new`;
-const documents = `${os.homedir()}/Documents/new`;
+const music = `${os.homedir()}/Music/`;
+const desktop = `${os.homedir()}/Desktop/`;
+const videos = `${os.homedir()}/Videos/`;
+const pictures = `${os.homedir()}/Pictures/`;
+const documents = `${os.homedir()}/Documents/`;
 
 function walk(dir, filelist) {
   files = fs.readdirSync(dir);
@@ -46,11 +46,15 @@ function sort(directory, options) {
 
   // let parametizedOptions = params.join('');
 
-  const files = walk(directory);
-
-  files.forEach(file => {
+  // const files = walk(directory);
+  // console.log(files);
+  files.forEach(async file => {
     if (!params.length) {
-      findType(file);
+      filetype = await findType(file);
+      if (filetype === 'music') {
+      }
+      if (filetype === 'video') {
+      }
       //find mimetype
       //sort into directory based on mimetypes using rename
       // sort all files here
@@ -74,25 +78,14 @@ function findType(file) {
     : video.indexOf(fileExt) > -1
       ? (filetype = 'video')
       : documents.indexOf(fileExt) > -1
-        ? (filetype = 'documents')
+        ? (filetype = 'document')
         : pictures.indexOf(fileExt) > -1
-          ? (filetype = 'pictures')
+          ? (filetype = 'picture')
           : (filetype = 'unknown');
-  // if (music.indexOf(fileExt) > -1) {
-  //   return (filetype = 'music');
-  // }
-  // if (video.indexOf(fileExt) > -1) {
-  //   return (filetype = 'video');
-  // }
-  // if (documents.indexOf(fileExt) > -1) {
-  //   return (filetype = 'documents');
-  // }
-  // if (pictures.indexOf(fileExt) > -1) {
-  //   return (filetype = 'pictures');
-  // }
 
   return fileType;
 }
+
 module.exports = {
   sort
 };
