@@ -45,11 +45,17 @@ function sort(directory, options) {
   // let parametizedOptions = params.join('');
 
   const files = walk(directory);
-  console.log(files);
+
   files.forEach(file => {
+    filetype = findType(file);
     console.log(file);
+    // if (params.length) {
+    //   var folders = params.split(',');
+    //   folders.forEach(folder => {
+    //     if()
+    //   });
+    // }
     if (!params.length) {
-      filetype = findType(file);
       if (filetype === 'music') {
         fs.rename(file, `${music}/${filename(file)}`, err => {
           if (err) throw err;
@@ -60,11 +66,13 @@ function sort(directory, options) {
           if (err) throw err;
         });
       }
+
       if (filetype === 'document') {
         fs.rename(file, `${documents}/${filename(file)}`, err => {
           if (err) throw err;
         });
       }
+
       if (filetype === 'picture') {
         fs.rename(file, `${pictures}/${filename(file)}`, err => {
           if (err) throw err;
