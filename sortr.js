@@ -4,9 +4,16 @@ const path = require('path');
 
 //sortr code
 const sortOptions = ['music', 'videos', 'pictures', 'documents'];
+const fileTypeOptions = ['music', 'video', 'picture', 'document'];
 const Home = os.homedir();
 //folders to sort to
 const folders = {
+  sortOptions: {
+    music: `${Home}/Music`,
+    video: `${Home}/Videos`,
+    picture: `${Home}/Pictures`,
+    document: `${Home}/Documents`
+  },
   downloads: `${Home}/Downloads/test`,
   music: `${Home}/Music`,
   desktop: `${Home}/Desktop`,
@@ -44,29 +51,31 @@ function sort(directory, options) {
       directory = folder;
     }
   });
+  console.log(directory);
   sortOptions.forEach(option => {
     if (options[option]) {
       params.push(option);
     }
   });
 
-  let parametizedOptions = params.join('');
-  console.log(parametizedOptions);
+  // let parametizedOptions = params.join('');
+  // console.log(parametizedOptions);
   const files = walk(directory);
 
   files.forEach(file => {
-    filetype = findType(file);
-
-    if (!params.length) {
-      rename(file, fileType);
-    }
+    const fileType = findType(file);
+    console.log(filetype);
+    // if (params.length) {
+    rename(file, fileType);
+    // }
   });
 }
 function rename(file, fileType) {
-  sortOptions.forEach(option => {
+  fileTypeOptions.forEach(option => {
     if (fileType === option) {
-      return fs.rename(file, `${folders[option]}/${filename(file)}`, err => {
+      fs.rename(file, `${folders.sortOptions[option]}/${filename(file)}`, err => {
         if (err) throw err;
+        console.log(file, 'renamed');
       });
     }
     return;
