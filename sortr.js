@@ -3,22 +3,17 @@ const os = require('os');
 const path = require('path');
 
 //sortr code
-const dirs = [
-  'Downloads',
-  'Music',
-  'Desktop',
-  'Videos',
-  'Pictures',
-  'Documents'
-];
-
+const sortOptions = ['music', 'videos', 'pictures', 'documents'];
+const Home = os.homedir();
 //folders to sort to
-const downloads = os.homedir() + '/' + 'Downloads/test';
-const music = `${os.homedir()}/Music`;
-const desktop = `${os.homedir()}/Desktop`;
-const videos = `${os.homedir()}/Videos`;
-const pictures = `${os.homedir()}/Pictures`;
-const documents = `${os.homedir()}/Documents`;
+const folders = {
+  downloads: `${Home}/Downloads/test`,
+  music: `${Home}/Music`,
+  desktop: `${Home}/Desktop`,
+  videos: `${Home}/Videos`,
+  pictures: `${Home}/Pictures`,
+  documents: `${Home}/Documents`
+};
 
 function walk(dir, filelist) {
   files = fs.readdirSync(dir);
@@ -33,52 +28,48 @@ function walk(dir, filelist) {
   return filelist;
 }
 
+/**
+ *
+ * @param {*} directory
+ * @param {*} options
+ */
+
 function sort(directory, options) {
   let params = [];
 
-  if (options.all) params.push(directory);
-  if (options.music) params.push(music);
-  if (options.videos) params.push(videos);
-  if (options.pictures) params.push(pictures);
-  if (options.books) params.push(documents);
+  const foldersKey = Object.keys(folders);
+  foldersKey.forEach(folderKey => {
+    const folder = folders[folderKey];
+    if (directory == folderKey) {
+      directory = folder;
+    }
+  });
+  sortOptions.forEach(option => {
+    if (options[option]) {
+      params.push(option);
+    }
+  });
 
-  // let parametizedOptions = params.join('');
-
+  let parametizedOptions = params.join('');
+  console.log(parametizedOptions);
   const files = walk(directory);
 
   files.forEach(file => {
     filetype = findType(file);
-    console.log(file);
-    // if (params.length) {
-    //   var folders = params.split(',');
-    //   folders.forEach(folder => {
-    //     if()
-    //   });
-    // }
+
     if (!params.length) {
-      if (filetype === 'music') {
-        fs.rename(file, `${music}/${filename(file)}`, err => {
-          if (err) throw err;
-        });
-      }
-      if (filetype === 'video') {
-        fs.rename(file, `${videos}/${filename(file)}`, err => {
-          if (err) throw err;
-        });
-      }
-
-      if (filetype === 'document') {
-        fs.rename(file, `${documents}/${filename(file)}`, err => {
-          if (err) throw err;
-        });
-      }
-
-      if (filetype === 'picture') {
-        fs.rename(file, `${pictures}/${filename(file)}`, err => {
-          if (err) throw err;
-        });
-      }
+      rename(file, fileType);
     }
+  });
+}
+function rename(file, fileType) {
+  sortOptions.forEach(option => {
+    if (fileType === option) {
+      return fs.rename(file, `${folders[option]}/${filename(file)}`, err => {
+        if (err) throw err;
+      });
+    }
+    return;
   });
 }
 
