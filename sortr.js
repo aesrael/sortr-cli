@@ -51,34 +51,33 @@ function sort(directory, options) {
       directory = folder;
     }
   });
-  console.log(directory);
+  // console.log(directory);
   sortOptions.forEach(option => {
     if (options[option]) {
       params.push(option);
     }
   });
 
-  // let parametizedOptions = params.join('');
-  // console.log(parametizedOptions);
   const files = walk(directory);
 
   files.forEach(file => {
     const fileType = findType(file);
-    console.log(filetype);
-    // if (params.length) {
-    rename(file, fileType);
-    // }
+    if (params.indexOf(fileType) > -1) {
+      rename(file, fileType);
+      // console.log(file);
+    }
   });
 }
 function rename(file, fileType) {
+  console.log(file)
   fileTypeOptions.forEach(option => {
-    if (fileType === option) {
-      fs.rename(file, `${folders.sortOptions[option]}/${filename(file)}`, err => {
-        if (err) throw err;
-        console.log(file, 'renamed');
-      });
-    }
-    return;
+      fs.rename(
+        file,
+        `${folders.sortOptions[option]}/${filename(file)}`,
+        err => {
+          if (err) throw err;
+        }
+      )
   });
 }
 
@@ -92,8 +91,8 @@ function filename(file) {
 
 function findType(file) {
   const music = ['mp3', 'ogg', 'wav'];
-  const video = ['mp4', 'avi', 'flv', 'vob', 'mpg', 'mpeg'];
-  const documents = ['pdf', 'epub', 'doc', 'ppt'];
+  const videos = ['mp4', 'webm', 'avi', 'flv', 'vob', 'mpg', 'mpeg'];
+  const documents = ['pdf', 'epub', 'doc', 'ppt', 'txt', 'docx', 'epub'];
   const pictures = ['png', 'jpeg', 'jpg'];
 
   const fileExt = file
@@ -103,13 +102,15 @@ function findType(file) {
     .pop();
   return music.indexOf(fileExt) > -1
     ? (filetype = 'music')
-    : video.indexOf(fileExt) > -1
-      ? (filetype = 'video')
+    : videos.indexOf(fileExt) > -1
+      ? (filetype = 'videos')
       : documents.indexOf(fileExt) > -1
-        ? (filetype = 'document')
+        ? (filetype = 'documents')
         : pictures.indexOf(fileExt) > -1
-          ? (filetype = 'picture')
-          : (filetype = 'unknown');
+          ? (filetype = 'pictures')
+          : documents.indexOf(fileExt) > -1
+            ? (filetype = 'documents')
+            : (filetype = 'unknown');
 
   return fileType;
 }

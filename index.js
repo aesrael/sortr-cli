@@ -16,7 +16,7 @@ program
   .option('-a, --all', 'Sort all files')
   .option('-m, --music', 'Sort Music files only')
   .option('-v, --videos', 'Sort videos only')
-  .option('-b, --books', 'sort books and documents only')
+  .option('-b, --documents', 'sort books and documents only')
   .option('-d, --pictures', 'sort pictures only')
   .action(sort);
 
