@@ -1,8 +1,14 @@
+/**
+ * Imports
+ */
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-//sortr code
+/**
+ * GLobal variables
+ */
+
 const sortOptions = ['music', 'videos', 'pictures', 'documents'];
 const fileTypeOptions = ['music', 'video', 'picture', 'document'];
 const Home = os.homedir();
@@ -22,6 +28,13 @@ const folders = {
   documents: `${Home}/Documents`
 };
 
+/**
+ * Walks through supplied directory and returns the file tree
+ *
+ * @param dir {string} Directory to sort
+ * @param filelist {array of files}
+ * @return filelist {array} files in dir.
+ */
 function walk(dir, filelist) {
   files = fs.readdirSync(dir);
   filelist = filelist || [];
@@ -36,9 +49,11 @@ function walk(dir, filelist) {
 }
 
 /**
+ * Walks through supplied directory and returns the file tree
  *
- * @param {*} directory
- * @param {*} options
+ * @param directory {string} Directory to sort
+ * @param options {cli flags} eg --music --videos
+ *
  */
 
 function sort(directory, options) {
@@ -51,7 +66,7 @@ function sort(directory, options) {
       directory = folder;
     }
   });
-  
+
   sortOptions.forEach(option => {
     if (options[option]) {
       params.push(option);
@@ -63,11 +78,16 @@ function sort(directory, options) {
   files.forEach(file => {
     const fileType = findType(file);
     if (params.indexOf(fileType) > -1) {
-      rename(file, fileType);
+      rename(file);
     }
   });
 }
-function rename(file, fileType) {
+/**
+ * Walks through supplied directory and returns the file tree
+ *
+ * @param file {file} Directory to sort
+ */
+function rename(file) {
   console.log(file);
   fileTypeOptions.forEach(option => {
     fs.rename(file, `${folders.sortOptions[option]}/${filename(file)}`, err => {
@@ -76,6 +96,12 @@ function rename(file, fileType) {
   });
 }
 
+/**
+ * Walks through supplied directory and returns the file tree
+ *
+ * @param file {file path string} file string
+ * @return file extension.
+ */
 function filename(file) {
   return file
     .toString()
@@ -84,6 +110,12 @@ function filename(file) {
     .pop();
 }
 
+/**
+ * Walks through supplied directory and returns the file tree
+ *
+ * @param file {file path string} file string
+ * @return filetype
+ */
 function findType(file) {
   const music = ['mp3', 'ogg', 'wav'];
   const videos = ['mp4', 'webm', 'avi', 'flv', 'vob', 'mpg', 'mpeg'];
