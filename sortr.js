@@ -51,7 +51,7 @@ function sort(directory, options) {
       directory = folder;
     }
   });
-  // console.log(directory);
+  
   sortOptions.forEach(option => {
     if (options[option]) {
       params.push(option);
@@ -64,20 +64,15 @@ function sort(directory, options) {
     const fileType = findType(file);
     if (params.indexOf(fileType) > -1) {
       rename(file, fileType);
-      // console.log(file);
     }
   });
 }
 function rename(file, fileType) {
-  console.log(file)
+  console.log(file);
   fileTypeOptions.forEach(option => {
-      fs.rename(
-        file,
-        `${folders.sortOptions[option]}/${filename(file)}`,
-        err => {
-          if (err) throw err;
-        }
-      )
+    fs.rename(file, `${folders.sortOptions[option]}/${filename(file)}`, err => {
+      if (err) throw err;
+    });
   });
 }
 
