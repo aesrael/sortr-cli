@@ -8,10 +8,10 @@ const path = require('path');
 /**
  * GLobal variables
  */
-
 const sortOptions = ['music', 'videos', 'pictures', 'documents'];
 const fileTypeOptions = ['music', 'video', 'picture', 'document'];
 const Home = os.homedir();
+
 //folders to sort to
 const folders = {
   sortOptions: {
@@ -49,13 +49,12 @@ function walk(dir, filelist) {
 }
 
 /**
- * Walks through supplied directory and returns the file tree
+ * Main function to sort files into dir
  *
  * @param directory {string} Directory to sort
  * @param options {cli flags} eg --music --videos
  *
  */
-
 function sort(directory, options) {
   let params = [];
 
@@ -82,8 +81,9 @@ function sort(directory, options) {
     }
   });
 }
+
 /**
- * Walks through supplied directory and returns the file tree
+ * Rename file to it's correct directory
  *
  * @param file {file} Directory to sort
  */
@@ -97,10 +97,10 @@ function rename(file) {
 }
 
 /**
- * Walks through supplied directory and returns the file tree
+ * Gets the file name
  *
  * @param file {file path string} file string
- * @return file extension.
+ * @return file name.
  */
 function filename(file) {
   return file
@@ -111,7 +111,7 @@ function filename(file) {
 }
 
 /**
- * Walks through supplied directory and returns the file tree
+ * Gets the file extension
  *
  * @param file {file path string} file string
  * @return filetype
